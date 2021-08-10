@@ -7,17 +7,17 @@
       <div class="nav__container">
         <div class="nav__left">
           <div class="logo__container"><p>LOGO</p></div>
-          <div class="nav__links bg--white-50 border--rounded">
+          <div class="nav__links">
             <ul>
-              <li>MENU1</li>
-              <li>MENU2</li>
+              <li><v-btn text :ripple="false">Menu1</v-btn></li>
+              <li><v-btn text :ripple="false">Menu2</v-btn></li>
               <li>
                 <v-menu
                   offset-x
                   right
                   :nudge-left="15"
                   :nudge-bottom="15"
-                  content-class="locales__container bg--white-50"
+                  content-class="menu "
                 >
                   <template #activator="{ on, attrs }">
                     <v-btn v-bind="attrs" :depressed="true" text v-on="on">
@@ -25,7 +25,7 @@
                     </v-btn>
                   </template>
 
-                  <v-list dense class="locales">
+                  <v-list dense class="menu__list">
                     <v-list-item @click="onClick">
                       <v-list-item-title>TR</v-list-item-title>
                     </v-list-item>
@@ -40,10 +40,49 @@
           </div>
         </div>
         <div class="nav__right">
-          <div class="nav__watchlist bg--white-50 border--rounded">
-            vuetify menu
+          <div class="watchlist__container">
+            <v-menu
+              offset-y
+              offset-x
+              left
+              :close-on-content-click="false"
+              content-class="menu watchlist__menu"
+            >
+              <template #activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  :depressed="true"
+                  text
+                  :ripple="false"
+                  v-on="on"
+                >
+                  Watchlist <v-icon color="red" small right>mdi-circle</v-icon>
+                </v-btn>
+              </template>
+              <v-list class="menu__list" width="240" height="210">
+                <v-list-item
+                  v-for="i in 5"
+                  :key="i"
+                  class="movie"
+                  @click="onClick"
+                >
+                  <v-img
+                    class="movie__image"
+                    cover
+                    width="70"
+                    src="/images/rick-and-morty.jpg"
+                  ></v-img>
+                  <div class="movie__content">
+                    <span>Rick and Morty</span>
+                    <v-btn x-small text>x</v-btn>
+                  </div>
+                </v-list-item>
+              </v-list>
+            </v-menu>
           </div>
-          <div class="nav__sign bg--white-50 border--rounded">Sign In</div>
+          <div class="sign__container">
+            <v-btn text :ripple="false">Sign In</v-btn>
+          </div>
         </div>
       </div>
     </v-app-bar>
@@ -74,6 +113,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@mixin white-blur {
+  background-color: rgba($color: white, $alpha: 0.2);
+  backdrop-filter: blur(10px);
+}
+@mixin b-rounded($round-value: 0.7rem) {
+  border: 1px solid rgba($color: #d686ff, $alpha: 0.3);
+  border-radius: $round-value;
+}
+
 ::v-deep .v-toolbar__content {
   padding-top: 45px;
   display: block;
@@ -88,6 +136,9 @@ export default {
     margin-left: auto;
     margin-right: auto;
     font-weight: 100;
+    ::v-deep .v-btn {
+      font-weight: 100;
+    }
   }
 
   &__left,
@@ -96,55 +147,89 @@ export default {
     gap: 0 20px;
   }
 
-  &__left {
-  }
-
   &__links {
+    @include white-blur();
+    @include b-rounded();
     align-self: stretch;
     display: flex;
     align-items: center;
-    padding: 0 1.5rem;
     ul {
       display: flex;
       align-items: center;
       list-style-type: none;
-      gap: 0 2rem;
+      gap: 0 1rem;
       padding-left: 0;
     }
-    ::v-deep .v-btn {
-      font-weight: 100;
+  }
+}
+
+.menu {
+  border-radius: 0.7rem;
+  min-width: unset !important; /* vuetify adds min-width as inline-style. only way i change this by !important */
+  backdrop-filter: blur(
+    10px
+  ); /* adding this property direclty to list gives glitch for blur */
+  &__list {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 0.7rem;
+    border: 1px solid rgba($color: #d686ff, $alpha: 0.3);
+    > div {
+      cursor: pointer;
     }
   }
-
-  &__watchlist,
-  &__sign {
-    padding: 0.6rem 1.5rem;
-  }
 }
 
-.locales {
-  background-color: unset !important;
-  background: unset !important;
+.watchlist__menu {
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #1f1f1f;
+    border-radius: 20px;
+  }
+  // ::-webkit-scrollbar-button       { /* 2 */ }
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 20px;
+  }
+  // ::-webkit-scrollbar-track-piece  { /* 4 */ }
+}
+
+.movie {
+  @include b-rounded(0.3rem);
+  padding: unset;
+  margin: 0.2rem 0.5rem;
+  align-items: stretch;
   overflow: hidden;
-  border-radius: 0.7rem;
-  border: 1px solid rgba($color: purple, $alpha: 0.3);
-  &__container {
-    border-radius: 0.7rem;
-    min-width: unset !important; /* vuetify adds min-width as inline-style. only way i change this by !important */
+  height: 41px;
+  &__image {
+    flex: 0 0 auto;
   }
-
-  > div {
-    cursor: pointer;
+  &__content {
+    padding: 0 0.5rem;
+    display: flex;
+    flex: 1 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #1f1f1f;
+    font-size: 0.6rem;
   }
 }
 
-/* Utility classes */
-.bg--white-50 {
-  background-color: rgba($color: white, $alpha: 0.2);
-  backdrop-filter: blur(10px);
-}
-.border--rounded {
-  border: 1px solid rgba($color: purple, $alpha: 0.3);
-  border-radius: 0.7rem;
+.watchlist__container,
+.sign__container {
+  @include white-blur();
+  @include b-rounded();
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  ::v-deep .v-btn:hover,
+  ::v-deep .v-btn:focus,
+  ::v-deep .v-btn:active {
+    &::before {
+      opacity: 0;
+    }
+  }
 }
 </style>
