@@ -1,6 +1,7 @@
 <template>
   <div>
     <p>hi from index page</p>
+    <carousel-movies></carousel-movies>
   </div>
 </template>
 
