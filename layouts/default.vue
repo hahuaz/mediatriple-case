@@ -81,7 +81,41 @@
             </v-menu>
           </div>
           <div class="sign__container">
-            <v-btn text :ripple="false">Sign In</v-btn>
+            <v-btn text :ripple="false" @click="dialog = !dialog"
+              >Sign In</v-btn
+            >
+            <v-dialog v-model="dialog" width="490" internal-activator>
+              <div class="logModal">
+                <h1>Sign In</h1>
+                <p>Do you have an tooh account?</p>
+                <div class="logModal__inputs">
+                  <v-text-field
+                    color="#f1f1f1"
+                    background-color="black"
+                    label="Email"
+                    outlined
+                  ></v-text-field>
+                  <v-text-field
+                    color="#f1f1f1"
+                    background-color="black"
+                    label="Password"
+                    outlined
+                  ></v-text-field>
+                  <v-btn class="logModal__forgot" plain>Forgot password?</v-btn>
+                </div>
+                <div class="actions">
+                  <v-btn class="signup" text>Sign Up</v-btn>
+                  <v-btn class="signin" outlined rounded x-large>Sign In</v-btn>
+                </div>
+                <div class="tos">
+                  <p>
+                    This site is protected by reCAPTCHA and the
+                    <span>Google Privacy Policy</span> and
+                    <span>Terms of Service</span> apply.
+                  </p>
+                </div>
+              </div>
+            </v-dialog>
           </div>
         </div>
       </div>
@@ -101,6 +135,7 @@
 export default {
   data() {
     return {
+      dialog: true,
       headerImage: {
         height: '324',
         src: '/images/index-hero.jpg',
@@ -113,8 +148,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@mixin white-blur {
-  background-color: rgba($color: white, $alpha: 0.2);
+@mixin white-blur($blur: 10px, $color: white) {
+  background-color: rgba($color, $alpha: 0.2);
   backdrop-filter: blur(10px);
 }
 @mixin b-rounded($round-value: 0.7rem) {
@@ -163,6 +198,23 @@ export default {
   }
 }
 
+.watchlist__container,
+.sign__container {
+  @include white-blur();
+  @include b-rounded();
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  ::v-deep .v-btn:hover,
+  ::v-deep .v-btn:focus,
+  ::v-deep .v-btn:active {
+    &::before {
+      opacity: 0;
+    }
+  }
+}
+
 .menu {
   border-radius: 0.7rem;
   min-width: unset !important; /* vuetify adds min-width as inline-style. only way i change this by !important */
@@ -187,12 +239,10 @@ export default {
     background: #1f1f1f;
     border-radius: 20px;
   }
-  // ::-webkit-scrollbar-button       { /* 2 */ }
   &::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 20px;
   }
-  // ::-webkit-scrollbar-track-piece  { /* 4 */ }
 }
 
 .movie {
@@ -216,19 +266,64 @@ export default {
   }
 }
 
-.watchlist__container,
-.sign__container {
+.logModal {
   @include white-blur();
-  @include b-rounded();
-  display: flex;
-  align-items: center;
-  cursor: pointer;
+  @include b-rounded(1rem);
+  min-height: 550px;
+  text-align: center;
+  padding: 48px 60px 0;
 
-  ::v-deep .v-btn:hover,
-  ::v-deep .v-btn:focus,
-  ::v-deep .v-btn:active {
-    &::before {
-      opacity: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  ::v-deep .v-btn {
+    text-transform: unset;
+    font-weight: 100;
+    font-size: 0.8rem;
+  }
+
+  ::v-deep .v-label {
+    color: white;
+    font-weight: bolder;
+  }
+
+  &__inputs {
+    display: flex;
+    flex-direction: column;
+    input::placeholder {
+      color: red;
+    }
+  }
+  &__forgot {
+    align-self: flex-end;
+    height: 1.5rem;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    ::v-deep .v-input__slot {
+      margin-bottom: unset;
+    }
+
+    .signin {
+      @include white-blur(undefined, gray);
+      font-size: 1rem;
+      padding: 0 2.4rem;
+      height: 2.5rem;
+    }
+  }
+  .tos {
+    font-weight: 100;
+    font-size: 0.7rem;
+    padding: 0 2rem;
+    color: rgb(197, 197, 197);
+    span {
+      text-decoration: underline;
+      cursor: pointer;
     }
   }
 }
