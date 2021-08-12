@@ -26,11 +26,11 @@
                   </template>
 
                   <v-list dense class="menu__list">
-                    <v-list-item @click="onClick">
+                    <v-list-item @click="changeLocal">
                       <v-list-item-title>TR</v-list-item-title>
                     </v-list-item>
 
-                    <v-list-item @click="onClick">
+                    <v-list-item @click="changeLocal">
                       <v-list-item-title>EN</v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -60,12 +60,7 @@
                 </v-btn>
               </template>
               <v-list class="menu__list" width="240" height="210">
-                <v-list-item
-                  v-for="i in 5"
-                  :key="i"
-                  class="movie"
-                  @click="onClick"
-                >
+                <v-list-item v-for="i in 5" :key="i" class="movie">
                   <v-img
                     class="movie__image"
                     cover
@@ -135,7 +130,7 @@
 export default {
   data() {
     return {
-      dialog: true,
+      dialog: false,
       headerImage: {
         height: '324',
         src: '/images/index-hero.jpg',
@@ -143,6 +138,11 @@ export default {
           '180deg, rgba(0,0,0,.7) 0%, rgba(0,0,0,0) 60%, rgba(0,0,0,.7) 100%',
       },
     }
+  },
+  methods: {
+    changeLocal() {
+      console.log('locale changed')
+    },
   },
 }
 </script>
@@ -216,15 +216,19 @@ export default {
 }
 
 .menu {
-  border-radius: 0.7rem;
+  @include white-blur(
+
+  ); /* adding this property to child list gives glitch for blur */
+  @include b-rounded();
+
   min-width: unset !important; /* vuetify adds min-width as inline-style. only way i change this by !important */
-  backdrop-filter: blur(
-    10px
-  ); /* adding this property direclty to list gives glitch for blur */
+
+  ::v-deep .v-shit,
+  ::v-deep .v-list {
+    background-color: unset;
+  }
+
   &__list {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 0.7rem;
-    border: 1px solid rgba($color: #d686ff, $alpha: 0.3);
     > div {
       cursor: pointer;
     }
@@ -246,9 +250,7 @@ export default {
 }
 
 .movie {
-  @include b-rounded(0.3rem);
-  padding: unset;
-  margin: 0.2rem 0.5rem;
+  padding: 0.2rem 0.5rem;
   align-items: stretch;
   overflow: hidden;
   height: 41px;
