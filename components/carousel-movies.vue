@@ -1,30 +1,47 @@
 <template>
-  <v-sheet class="mx-auto" elevation="8" max-width="1264">
+  <v-sheet class="mx-auto" elevation="8" max-width="1328px">
+    <!-- TODO add center-active attribute if it's onliy mobile -->
     <v-slide-group
       v-model="model"
-      class="pa-4"
-      active-class="success"
+      class="my-4"
+      active-class="hovered"
       show-arrows
     >
-      <v-slide-item v-for="n in 15" :key="n" v-slot="{ active, toggle }">
-        <v-card
-          :color="active ? undefined : 'grey lighten-1'"
-          class="ma-4"
-          height="170"
+      <v-slide-item v-for="(movie, i) in movies" :key="i" v-slot="{ toggle }">
+        <div
+          class="movie__container mx-4 my-8"
+          height="250"
           width="300"
-          @click="toggle"
+          @mouseenter="toggle"
+          @mouseleave="toggle"
         >
-          <v-row class="fill-height" align="center" justify="center">
-            <v-scale-transition>
-              <v-icon
-                v-if="active"
-                color="white"
-                size="48"
-                v-text="'mdi-close-circle-outline'"
-              ></v-icon>
-            </v-scale-transition>
-          </v-row>
-        </v-card>
+          <div class="movie">
+            <v-img
+              :src="'/images/' + movie.image + '.jpg'"
+              width="300"
+              height="250"
+              alt=""
+            >
+            </v-img>
+            <div class="movie__content">
+              <div class="movie__details">
+                <span class="movie__name">{{ movie.name }}</span>
+                <span>{{ movie.year }} - 1h 22m</span>
+              </div>
+              <div class="movie__actions">
+                <v-btn icon @click.stop="addWatchlist">
+                  <v-icon>mdi-heart-outline</v-icon>
+                </v-btn>
+                <v-btn icon x-large @click.stop="addWatchlist">
+                  <v-icon class="action__play">mdi-google-play</v-icon>
+                </v-btn>
+                <v-btn icon @click.stop="addWatchlist">
+                  <v-icon>mdi-heart-broken</v-icon>
+                </v-btn>
+              </div>
+            </div>
+          </div>
+        </div>
       </v-slide-item>
     </v-slide-group>
   </v-sheet>
@@ -35,7 +52,28 @@ export default {
   data() {
     return {
       model: null,
+      movies: [
+        {
+          name: 'Rick and Morty',
+          image: 'rick-and-morty',
+          year: 2015,
+        },
+        {
+          name: 'Children of Men',
+          image: 'children-of-men',
+          year: 2012,
+        },
+        { name: 'La La Land', image: 'la-la-land', year: 2019 },
+        { name: 'Gravity', image: 'gravity', year: 2010 },
+        { name: 'Community', image: 'community', year: 2008 },
+        { name: 'The godfather', image: 'the-godfather', year: 1980 },
+      ],
     }
+  },
+  methods: {
+    addWatchlist() {
+      console.log('watchlist added')
+    },
   },
 }
 </script>
@@ -49,7 +87,7 @@ export default {
   .v-icon {
     font-size: 3rem;
     border-radius: 100%;
-    background-color: rgba($color: black, $alpha: 0.2);
+    background-color: rgba($color: black, $alpha: 0.4);
   }
 }
 ::v-deep .v-slide-group__prev {
@@ -59,8 +97,53 @@ export default {
   right: 3rem;
 }
 
-::v-deep .v-slide-group__next--disabled,
-.v-slide-group__prev--disabled {
-  pointer-events: unset;
+::v-deep .v-image {
+  transition: all 700ms;
+}
+
+.movie__container.hovered {
+  .v-image {
+    height: 180px !important;
+  }
+  .movie__content {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.movie {
+  width: 300px;
+  height: 250px;
+  position: relative;
+  &__content {
+    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 700ms;
+    font-size: 0.7rem;
+    font-weight: 100;
+  }
+
+  &__details {
+    display: flex;
+    justify-content: space-between;
+    span:first-child {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+  }
+  &__actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+
+    i {
+      font-size: 1.3rem;
+    }
+    .action__play {
+      font-size: 2.2rem;
+    }
+  }
 }
 </style>
