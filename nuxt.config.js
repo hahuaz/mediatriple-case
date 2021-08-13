@@ -47,6 +47,7 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/i18n',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -79,7 +80,28 @@ export default {
       ],
     },
   },
-
+  i18n: {
+    locales: [
+      { code: 'en', iso: 'en', file: 'en.js' },
+      { code: 'tr', iso: 'tr', file: 'tr.js' },
+    ],
+    defaultLocale: 'en',
+    langDir: '~/locales',
+    vueI18n: {
+      fallbackLocale: 'en',
+    },
+    strategy: 'no_prefix',
+    detectBrowserLanguage: {
+      alwaysRedirect: false,
+      fallbackLocale: '',
+      redirectOn: 'no prefix',
+      useCookie: true,
+      cookieCrossOrigin: false,
+      cookieDomain: null,
+      cookieKey: 'i18n_redirected',
+      cookieSecure: false,
+    },
+  },
   router: {
     middleware: ['mobile'],
   },

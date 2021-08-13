@@ -9,8 +9,16 @@
           <div class="logo__container"><p>LOGO</p></div>
           <div class="nav__links">
             <ul>
-              <li><v-btn text :ripple="false">Menu1</v-btn></li>
-              <li><v-btn text :ripple="false">Menu2</v-btn></li>
+              <li>
+                <v-btn text :ripple="false">{{
+                  $t('header.desktop.menu1')
+                }}</v-btn>
+              </li>
+              <li>
+                <v-btn text :ripple="false">{{
+                  $t('header.desktop.menu2')
+                }}</v-btn>
+              </li>
               <li>
                 <v-menu
                   offset-x
@@ -20,18 +28,24 @@
                   content-class="menu "
                 >
                   <template #activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" :depressed="true" text v-on="on">
-                      Localization
+                    <v-btn
+                      v-bind="attrs"
+                      :depressed="true"
+                      text
+                      style="text-transform: lowercase"
+                      v-on="on"
+                    >
+                      {{ $i18n.locale }}
                     </v-btn>
                   </template>
 
                   <v-list dense class="menu__list">
-                    <v-list-item @click="changeLocal">
-                      <v-list-item-title>TR</v-list-item-title>
-                    </v-list-item>
-
-                    <v-list-item @click="changeLocal">
-                      <v-list-item-title>EN</v-list-item-title>
+                    <v-list-item
+                      v-for="locale in $i18n.locales"
+                      :key="locale.code"
+                      @click="changeLocal(locale.code)"
+                    >
+                      <v-list-item-title>{{ locale.iso }}</v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </v-menu>
@@ -56,7 +70,8 @@
                   :ripple="false"
                   v-on="on"
                 >
-                  Watchlist <v-icon color="red" small right>mdi-circle</v-icon>
+                  {{ $t('header.desktop.watchlist') }}
+                  <v-icon color="red" small right>mdi-circle</v-icon>
                 </v-btn>
               </template>
               <v-list class="menu__list" width="240" height="210">
@@ -76,9 +91,9 @@
             </v-menu>
           </div>
           <div class="sign__container">
-            <v-btn text :ripple="false" @click="dialog = !dialog"
-              >Sign In</v-btn
-            >
+            <v-btn text :ripple="false" @click="dialog = !dialog">{{
+              $t('header.desktop.signin')
+            }}</v-btn>
             <v-dialog v-model="dialog" width="490" internal-activator>
               <div class="logModal">
                 <h1>Sign In</h1>
@@ -145,9 +160,12 @@ export default {
       },
     }
   },
+  mounted() {
+    console.log()
+  },
   methods: {
-    changeLocal() {
-      console.log('locale changed')
+    changeLocal(code) {
+      this.$i18n.setLocale(code)
     },
   },
 }
