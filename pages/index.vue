@@ -1,7 +1,8 @@
 <template>
   <div class="text-center">
-    <h3 class="my-8">Variant 1 Carousel</h3>
+    <h3 v-if="!$nuxt.context.isMobile" class="my-8">Variant 1 Carousel</h3>
     <carousel-movies></carousel-movies>
+    <div v-if="$nuxt.context.isMobile" style="height: 600px"></div>
   </div>
 </template>
 

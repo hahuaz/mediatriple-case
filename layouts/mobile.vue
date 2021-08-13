@@ -1,14 +1,10 @@
 <template>
   <v-app dark>
     <v-navigation-drawer v-model="drawer" fixed app>
+      <div class="logo__container"><p>LOGO</p></div>
+      <v-divider></v-divider>
       <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
+        <v-list-item v-for="(item, i) in items" :key="i">
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -17,23 +13,25 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <template #append>
+        <div class="ma-4">
+          <v-btn block>Tr</v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
-    <v-app-bar :clipped-left="clipped" fixed app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="clipped = !clipped">
-        <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
+    <v-app-bar app height="200" shrink-on-scroll>
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+
+      <template #img="{ props }">
+        <v-img
+          v-bind="props"
+          gradient="to top, rgba(0,0,0,0), rgba(0,0,0,.7)"
+          src="/images/index-hero.jpg"
+        ></v-img>
+      </template>
     </v-app-bar>
     <v-main>
       <v-container>
@@ -41,8 +39,14 @@
       </v-container>
     </v-main>
 
-    <v-footer :absolute="!fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+    <v-footer absolute app class="justify-center">
+      <div class="font-weight-thin text-caption">
+        <span>
+          this app created for front-end position at
+          <i class="font-weight-medium"> Mediatriple </i> -
+          {{ new Date().getFullYear() }}
+        </span>
+      </div>
     </v-footer>
   </v-app>
 </template>
@@ -57,19 +61,24 @@ export default {
       items: [
         {
           icon: 'mdi-apps',
-          title: 'Welcome',
+          title: 'Home',
           to: '/',
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
+          title: 'About Us',
           to: '/inspire',
         },
       ],
-      miniVariant: false,
 
-      title: 'Vuetify.js',
+      title: 'LOGO',
     }
   },
 }
 </script>
+<style scoped lang="scss">
+.logo__container {
+  text-align: center;
+  margin: 1rem 0;
+}
+</style>

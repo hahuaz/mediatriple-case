@@ -1,11 +1,12 @@
 <template>
   <v-sheet class="mx-auto" elevation="8" max-width="1328px">
-    <!-- TODO add center-active attribute if it's onliy mobile -->
     <v-slide-group
+      id="movie-slide"
       v-model="model"
       class="my-4"
       active-class="hovered"
       show-arrows
+      :center-active="$nuxt.context.isMobile"
     >
       <v-slide-item v-for="(movie, i) in movies" :key="i" v-slot="{ toggle }">
         <div
@@ -70,6 +71,7 @@ export default {
       ],
     }
   },
+
   methods: {
     addWatchlist() {
       console.log('watchlist added')
@@ -78,29 +80,50 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-::v-deep .v-slide-group__prev,
-::v-deep .v-slide-group__next {
-  position: absolute;
-  top: calc(50% - 12px);
-  z-index: 100;
-  .v-icon {
-    font-size: 3rem;
-    border-radius: 100%;
-    background-color: rgba($color: black, $alpha: 0.4);
+<style lang="scss">
+#movie-slide {
+  .v-slide-group__prev,
+  .v-slide-group__next {
+    position: absolute;
+    top: calc(50% - 12px);
+    z-index: 2;
+    .v-icon {
+      font-size: 2rem;
+      border-radius: 100%;
+      background-color: rgba($color: black, $alpha: 0.4);
+    }
+  }
+  .v-slide-group__prev {
+    left: 1rem;
+  }
+  .v-slide-group__next {
+    right: 1rem;
+  }
+
+  .v-image {
+    transition: all 700ms;
+  }
+
+  @media screen and (min-width: 960px) {
+    .v-slide-group__prev,
+    .v-slide-group__next {
+      .v-icon {
+        font-size: 3rem;
+        border-radius: 100%;
+        background-color: rgba($color: black, $alpha: 0.4);
+      }
+    }
+    .v-slide-group__prev {
+      left: 3rem;
+    }
+    .v-slide-group__next {
+      right: 3rem;
+    }
   }
 }
-::v-deep .v-slide-group__prev {
-  left: 3rem;
-}
-::v-deep .v-slide-group__next {
-  right: 3rem;
-}
+</style>
 
-::v-deep .v-image {
-  transition: all 700ms;
-}
-
+<style lang="scss" scoped>
 .movie__container.hovered {
   .v-image {
     height: 180px !important;

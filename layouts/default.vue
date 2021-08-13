@@ -120,8 +120,14 @@
         <Nuxt />
       </v-container>
     </v-main>
-    <v-footer app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+    <v-footer app class="justify-center">
+      <div class="font-weight-thin text-caption">
+        <span>
+          this app created for front-end position at
+          <i class="font-weight-medium"> Mediatriple </i> -
+          {{ new Date().getFullYear() }}
+        </span>
+      </div>
     </v-footer>
   </v-app>
 </template>
