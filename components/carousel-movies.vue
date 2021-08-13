@@ -30,13 +30,17 @@
                 <span>{{ movie.year }} - 1h 22m</span>
               </div>
               <div class="movie__actions">
-                <v-btn icon @click.stop="addWatchlist">
+                <v-btn icon @click="addToWatchlist(movie)">
                   <v-icon>mdi-heart-outline</v-icon>
                 </v-btn>
-                <v-btn icon x-large @click.stop="addWatchlist">
+                <v-btn icon x-large>
                   <v-icon class="action__play">mdi-google-play</v-icon>
                 </v-btn>
-                <v-btn icon @click.stop="addWatchlist">
+                <v-btn
+                  icon
+                  :disabled="!isInWatchlist(movie)"
+                  @click="deleteFromWatchlist(movie)"
+                >
                   <v-icon>mdi-heart-broken</v-icon>
                 </v-btn>
               </div>
@@ -49,6 +53,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
@@ -71,10 +77,24 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapGetters('user', ['isInWatchlist']),
+  },
 
   methods: {
-    addWatchlist() {
-      console.log('watchlist added')
+    addToWatchlist(payload) {
+      try {
+        this.$store.dispatch('user/addToWatchlist', payload)
+      } catch (error) {
+        console.log(error.message)
+      }
+    },
+    deleteFromWatchlist(payload) {
+      try {
+        this.$store.dispatch('user/deleteFromWatchlist', payload)
+      } catch (error) {
+        console.log(error.message)
+      }
     },
   },
 }

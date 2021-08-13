@@ -74,19 +74,34 @@
                   <v-icon color="red" small right>mdi-circle</v-icon>
                 </v-btn>
               </template>
-              <v-list class="menu__list" width="240" height="210">
-                <v-list-item v-for="i in 5" :key="i" class="movie">
-                  <v-img
-                    class="movie__image"
-                    cover
-                    width="70"
-                    src="/images/rick-and-morty.jpg"
-                  ></v-img>
-                  <div class="movie__content">
-                    <span>Rick and Morty</span>
-                    <v-btn x-small text>x</v-btn>
-                  </div>
-                </v-list-item>
+              <v-list class="menu__list" width="240" max-height="210">
+                <p
+                  v-if="!getWatchlist.length"
+                  class="pa-4"
+                  style="color: black"
+                >
+                  Please add movie from carousel...
+                </p>
+                <template v-else>
+                  <v-list-item
+                    v-for="movie in getWatchlist"
+                    :key="movie.name"
+                    class="movie"
+                  >
+                    <v-img
+                      class="movie__image"
+                      cover
+                      width="70"
+                      :src="'/images/' + movie.image + '.jpg'"
+                    ></v-img>
+                    <div class="movie__content">
+                      <span>{{ movie.name }}</span>
+                      <v-btn x-small text @click="deleteFromWatchlist(movie)"
+                        >x</v-btn
+                      >
+                    </div>
+                  </v-list-item>
+                </template>
               </v-list>
             </v-menu>
           </div>
@@ -148,6 +163,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
@@ -160,12 +177,20 @@ export default {
       },
     }
   },
-  mounted() {
-    console.log()
+  computed: {
+    ...mapGetters('user', ['getWatchlist']),
   },
+
   methods: {
     changeLocal(code) {
       this.$i18n.setLocale(code)
+    },
+    deleteFromWatchlist(payload) {
+      try {
+        this.$store.dispatch('user/deleteFromWatchlist', payload)
+      } catch (error) {
+        console.log(error.message)
+      }
     },
   },
 }
