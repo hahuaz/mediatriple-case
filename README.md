@@ -1,5 +1,7 @@
 # mediatriple-casestudy
 
+Demo can be found at [Netlify](https://mediatriple-hahuaz.netlify.app/).
+
 ## Build Setup
 
 ```bash
@@ -16,3 +18,4 @@ $ npm run start
 # generate static project
 $ npm run generate
 ```
+
