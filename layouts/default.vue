@@ -172,7 +172,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@mixin white-blur($blur: 10px, $color: white) {
+@mixin blur($blur: 10px, $color: white) {
   background-color: rgba($color, $alpha: 0.2);
   backdrop-filter: blur(10px);
 }
@@ -207,7 +207,7 @@ export default {
   }
 
   &__links {
-    @include white-blur();
+    @include blur();
     @include b-rounded();
     align-self: stretch;
     display: flex;
@@ -224,7 +224,6 @@ export default {
 
 .watchlist__container,
 .sign__container {
-  @include white-blur();
   @include b-rounded();
   display: flex;
   align-items: center;
@@ -238,9 +237,15 @@ export default {
     }
   }
 }
+.watchlist__container {
+  @include blur();
+}
+.sign__container {
+  @include blur('undefined', black);
+}
 
 .menu {
-  @include white-blur(
+  @include blur(
 
   ); /* adding this property to child list gives glitch for blur */
   @include b-rounded();
@@ -293,7 +298,7 @@ export default {
 }
 
 .logModal {
-  @include white-blur();
+  @include blur(undefined, gray);
   @include b-rounded(1rem);
   min-height: 550px;
   text-align: center;
@@ -336,7 +341,7 @@ export default {
     }
 
     .signin {
-      @include white-blur(undefined, gray);
+      @include blur(undefined, gray);
       font-size: 1rem;
       padding: 0 2.4rem;
       height: 2.5rem;
