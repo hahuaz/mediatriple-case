@@ -224,6 +224,8 @@ export default {
 
 .watchlist__container,
 .sign__container {
+  @include blur();
+
   @include b-rounded();
   display: flex;
   align-items: center;
@@ -236,12 +238,6 @@ export default {
       opacity: 0;
     }
   }
-}
-.watchlist__container {
-  @include blur();
-}
-.sign__container {
-  @include blur('undefined', black);
 }
 
 .menu {
